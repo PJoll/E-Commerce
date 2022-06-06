@@ -49,6 +49,9 @@ res.status(500).json(err);
 })
 });
 
+
+// this .post definitely needs testing
+
 router.post('/', (req, res) => {
   // create a new tag
   Tag.create(req.body)
@@ -61,10 +64,41 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
+  Tag.update({
+    where: {
+      id: req.params.id
+    }
+  }).then((tagData) => {
+    if (tagData === null ) {
+      res.status(404).send("Tag not found")
+      return;
+    }
+    res.json(tagData)
+  }).catch((err) => {
+    console.log(err);
+    res.status(500).json(err);
+    })
 });
 
 router.delete('/:id', (req, res) => {
   // delete on tag by its `id` value
+// ch13 excercise 7 for reference
+
+Tag.destroy({
+  where: {
+    id: req.params.id
+  },
+}).then((tagData) => { 
+  if (tagData === null ) {
+  res.status(404).send("Tag not found")
+  return;
+  }
+  res.json(tagData);
+}). catch ((err) => {
+  console.log(err);
+    res.status(500).json(err);
+})
+
 });
 
 module.exports = router;
