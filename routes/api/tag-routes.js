@@ -54,12 +54,10 @@ res.status(500).json(err);
 
 router.post('/', (req, res) => {
   // create a new tag
+  // Tag.create(req.body)
   Tag.create(req.body)
-  .then((newTag) => {
-    res.json(newTag);
-  }).catch((err) =>{
-    res.json(err);
-  } );
+    .then((tag) => res.status(200).json(tag))
+    .catch((error) => res.status(404).json(error));
 });
 
 router.put('/:id', (req, res) => {
